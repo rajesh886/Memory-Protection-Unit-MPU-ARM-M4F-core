@@ -289,17 +289,33 @@ void mpufaultISR(){
     putsUart0("\r\n");
 
     NVIC_SYS_HND_CTRL_R &= ~NVIC_SYS_HND_CTRL_MEMP; //Clear the pending bit
-    NVIC_SYS_HND_CTRL_R |= NVIC_SYS_HND_CTRL_PNDSV;
+
+
+    NVIC_INT_CTRL_R |= NVIC_INT_CTRL_PEND_SV ;
+
+//    NVIC_SYS_PRI3_R |= 0x00200000;
+//    NVIC_SYS_PRI1_R |= 0x00600000;
+//    NVIC_PRI0_R |= 0x00000020;
+
+//    NVIC_SYS_HND_CTRL_R |= NVIC_SYS_HND_CTRL_PNDSV;
+
+    //while(true);
 
 }
 
 void pendsvISR(){
     putsUart0("pendSV in process N");
+    putsUart0("\r\n");
     if((NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_DERR) || (NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_IERR))
     {
-        NVIC_FAULT_STAT_R &= ~NVIC_FAULT_STAT_DERR;
-        NVIC_FAULT_STAT_R &= ~NVIC_FAULT_STAT_IERR;
+        if(NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_DERR){
+            NVIC_FAULT_STAT_R &= ~NVIC_FAULT_STAT_DERR;
+        }
+        else{
+            NVIC_FAULT_STAT_R &= ~NVIC_FAULT_STAT_IERR;
+        }
         putsUart0("Called from MPU.\r\n");
+        putsUart0("\r\n");
     }
 }
 

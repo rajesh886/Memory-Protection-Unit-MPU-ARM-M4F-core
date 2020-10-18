@@ -75,9 +75,9 @@ void (* const g_pfnVectors[])(void) =
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     hardfaultISR,                               // The hard fault handler
-    mpufaultISR,                      // The MPU fault handler
-    busfaultISR,                      // The bus fault handler
-    usagefaultISR,                      // The usage fault handler
+    mpufaultISR,                            // The MPU fault handler
+    busfaultISR,                            // The bus fault handler
+    usagefaultISR,                          // The usage fault handler
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
@@ -85,7 +85,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // SVCall handler
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
-    pendsvISR,                      // The PendSV handler
+    pendsvISR,                              // The PendSV handler
     IntDefaultHandler,                      // The SysTick handler
     IntDefaultHandler,                      // GPIO Port A
     IntDefaultHandler,                      // GPIO Port B

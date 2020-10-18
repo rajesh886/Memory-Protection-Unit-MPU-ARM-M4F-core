@@ -1,17 +1,17 @@
 ******************************************************************************
                   TI ARM Linker Unix v18.12.5                  
 ******************************************************************************
->> Linked Sat Oct 17 02:39:36 2020
+>> Linked Sun Oct 18 01:14:05 2020
 
 OUTPUT FILE NAME:   <MPU.out>
-ENTRY POINT SYMBOL: "_c_int00_noinit_noargs"  address: 00000bcd
+ENTRY POINT SYMBOL: "_c_int00_noinit_noargs"  address: 00000bdd
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  00000c0a  0003f3f6  R  X
+  FLASH                 00000000   00040000  00000c1a  0003f3e6  R  X
   SRAM                  20000000   00008000  00000800  00007800  RW X
 
 
@@ -19,9 +19,9 @@ SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    00000c0a   00000c0a    r-x
+00000000    00000000    00000c1a   00000c1a    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
-  0000026c    0000026c    0000099e   0000099e    r-x .text
+  0000026c    0000026c    000009ae   000009ae    r-x .text
 20000000    20000000    00000800   00000000    rw-
   20000000    20000000    00000800   00000000    rw- .stack
 
@@ -34,14 +34,14 @@ section   page    origin      length       input sections
 .intvecs   0    00000000    0000026c     
                   00000000    0000026c     tm4c123gh6pm_startup_ccs.obj (.intvecs)
 
-.text      0    0000026c    0000099e     
-                  0000026c    00000790     mpu.obj (.text)
-                  000009fc    0000017c     uart0.obj (.text)
-                  00000b78    00000054     mpu_s.obj (.text)
-                  00000bcc    0000002c     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.text:_c_int00_noinit_noargs:_c_int00_noinit_noargs)
-                  00000bf8    0000000a     tm4c123gh6pm_startup_ccs.obj (.text)
-                  00000c02    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
-                  00000c06    00000004                                   : exit.c.obj (.text:abort:abort)
+.text      0    0000026c    000009ae     
+                  0000026c    000007a0     mpu.obj (.text)
+                  00000a0c    0000017c     uart0.obj (.text)
+                  00000b88    00000054     mpu_s.obj (.text)
+                  00000bdc    0000002c     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.text:_c_int00_noinit_noargs:_c_int00_noinit_noargs)
+                  00000c08    0000000a     tm4c123gh6pm_startup_ccs.obj (.text)
+                  00000c12    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00000c16    00000004                                   : exit.c.obj (.text:abort:abort)
 
 .cinit     0    00000000    00000000     UNINITIALIZED
 
@@ -57,12 +57,12 @@ MODULE SUMMARY
        Module                         code   ro data   rw data
        ------                         ----   -------   -------
     ./
-       mpu.obj                        1936   0         0      
+       mpu.obj                        1952   0         0      
        tm4c123gh6pm_startup_ccs.obj   10     620       0      
        uart0.obj                      380    0         0      
        mpu_s.obj                      84     0         0      
     +--+------------------------------+------+---------+---------+
-       Total:                         2410   620       0      
+       Total:                         2426   620       0      
                                                               
     /Applications/ti/ccs930/ccs/tools/compiler/ti-cgt-arm_18.12.5.LTS/lib/rtsv7M4_T_le_v4SPD16_eabi.lib
        boot_cortex_m.c.obj            44     0         0      
@@ -73,15 +73,15 @@ MODULE SUMMARY
                                                               
        Stack:                         0      0         2048   
     +--+------------------------------+------+---------+---------+
-       Grand Total:                   2462   620       2048   
+       Grand Total:                   2478   620       2048   
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
 
 address   name                  
 -------   ----                  
-00000c07  C$$EXIT               
-00000bf9  ResetISR              
+00000c17  C$$EXIT               
+00000c09  ResetISR              
 20000800  __STACK_END           
 00000800  __STACK_SIZE          
 20000200  __STACK_TOP           
@@ -93,33 +93,33 @@ ffffffff  __binit__
 ffffffff  __c_args__            
 UNDEFED   __mpu_init            
 20000000  __stack               
-00000bcd  _c_int00_noinit_noargs
-00000c03  _system_pre_init      
-00000c07  abort                 
+00000bdd  _c_int00_noinit_noargs
+00000c13  _system_pre_init      
+00000c17  abort                 
 ffffffff  binit                 
 0000060f  busfaultISR           
 00000000  g_pfnVectors          
-00000bc7  getMSP                
-00000bc1  getPSP                
-00000b05  getcUart0             
+00000bd7  getMSP                
+00000bd1  getPSP                
+00000b15  getcUart0             
 0000063d  hardfaultISR          
 000005c5  initHw                
 00000309  initMPU               
-000009fd  initUart0             
-00000b19  kbhitUart0            
-00000869  main                  
+00000a0d  initUart0             
+00000b29  kbhitUart0            
+00000875  main                  
 0000069d  mpufaultISR           
 00000809  pendsvISR             
-00000b8b  privilegedmode        
-00000abd  putcUart0             
-00000ad9  putsUart0             
-00000bab  setASP                
-00000b99  setPSP                
-00000a91  setUart0BaudRate      
-00000841  thread                
+00000b9b  privilegedmode        
+00000acd  putcUart0             
+00000ae9  putsUart0             
+00000bbb  setASP                
+00000ba9  setPSP                
+00000aa1  setUart0BaudRate      
+0000084d  thread                
 00000277  uint32_tToHex         
 00000619  usagefaultISR         
-00000b7d  usermode              
+00000b8d  usermode              
 0000026d  waitPbPress           
 
 
@@ -139,25 +139,25 @@ address   name
 0000069d  mpufaultISR           
 00000800  __STACK_SIZE          
 00000809  pendsvISR             
-00000841  thread                
-00000869  main                  
-000009fd  initUart0             
-00000a91  setUart0BaudRate      
-00000abd  putcUart0             
-00000ad9  putsUart0             
-00000b05  getcUart0             
-00000b19  kbhitUart0            
-00000b7d  usermode              
-00000b8b  privilegedmode        
-00000b99  setPSP                
-00000bab  setASP                
-00000bc1  getPSP                
-00000bc7  getMSP                
-00000bcd  _c_int00_noinit_noargs
-00000bf9  ResetISR              
-00000c03  _system_pre_init      
-00000c07  C$$EXIT               
-00000c07  abort                 
+0000084d  thread                
+00000875  main                  
+00000a0d  initUart0             
+00000aa1  setUart0BaudRate      
+00000acd  putcUart0             
+00000ae9  putsUart0             
+00000b15  getcUart0             
+00000b29  kbhitUart0            
+00000b8d  usermode              
+00000b9b  privilegedmode        
+00000ba9  setPSP                
+00000bbb  setASP                
+00000bd1  getPSP                
+00000bd7  getMSP                
+00000bdd  _c_int00_noinit_noargs
+00000c09  ResetISR              
+00000c13  _system_pre_init      
+00000c17  C$$EXIT               
+00000c17  abort                 
 20000000  __stack               
 20000200  __STACK_TOP           
 20000800  __STACK_END           
