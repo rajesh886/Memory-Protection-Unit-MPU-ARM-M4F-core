@@ -23,6 +23,7 @@ void waitPbPress()
     while(GPIO_PORTF_DATA_R & PUSH_BUTTON_MASK);
 }
 
+//this function converts uint32_t value into hexadecimal value and prints the result.
 void uint32_tToHex(uint32_t decimal){
     uint32_t quotient, remainder;
     int i,j = 0;
@@ -73,7 +74,7 @@ void initMPU(){
       NVIC_MPU_ATTR_R |= 0x00000000;          // Setting TEX field for Flash
       NVIC_MPU_ATTR_R |= 0x00040000;          // Shareable
       NVIC_MPU_ATTR_R |= 0x00000000;          // Not Cacheable
-      NVIC_MPU_ATTR_R |= 0x00000000;          // Bufferable
+      NVIC_MPU_ATTR_R |= 0x00000000;          // Not Bufferable
       NVIC_MPU_ATTR_R |= 0x00000000;          // Sub region is enabled.
       NVIC_MPU_ATTR_R |= 0x0000003E;          // Region Size Mask for RAM, peripheral and bitbanded (Size = log2(4*1024*1024*1024)-1 )
       NVIC_MPU_ATTR_R |= 0x01;                // Region Enabled
@@ -162,7 +163,7 @@ void initMPU(){
       NVIC_MPU_ATTR_R |= 0x00040000;      // Shareable
       NVIC_MPU_ATTR_R |= 0x00020000;      // Cacheable
       NVIC_MPU_ATTR_R |= 0x00000000;      // Not Bufferable
-      NVIC_MPU_ATTR_R |= 0x00008000;      // Sub region is enabled.
+      NVIC_MPU_ATTR_R |= 0x00008000;      // Sub region is enabled and disabled for the 1kiB region.
       NVIC_MPU_ATTR_R |= (12 << 1);      // Region Size Mask for 8KiB
       NVIC_MPU_ATTR_R |= 0x01;            // Region Enabled
 
@@ -200,7 +201,6 @@ void busfaultISR(){
 void usagefaultISR(){
     putsUart0("Usage fault in process pid\r\n");
 }
-
 
 void hardfaultISR(){
     putsUart0("Hardfault in process pid\r\n");
@@ -291,53 +291,28 @@ void mpufaultISR(){
     NVIC_SYS_HND_CTRL_R &= ~NVIC_SYS_HND_CTRL_MEMP; //Clear the pending bit
 
 
-    NVIC_INT_CTRL_R |= NVIC_INT_CTRL_PEND_SV ;
-
-//    NVIC_SYS_PRI3_R |= 0x00200000;
-//    NVIC_SYS_PRI1_R |= 0x00600000;
-//    NVIC_PRI0_R |= 0x00000020;
-
-//    NVIC_SYS_HND_CTRL_R |= NVIC_SYS_HND_CTRL_PNDSV;
-
-    //while(true);
+    NVIC_INT_CTRL_R |= NVIC_INT_CTRL_PEND_SV ; //turning on the pendSV exception
 
 }
 
 void pendsvISR(){
     putsUart0("pendSV in process N");
     putsUart0("\r\n");
-    if((NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_DERR) || (NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_IERR))
+    if((NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_DERR) || (NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_IERR))  //clearing the IERR and DERR bit
     {
-        if(NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_DERR){
+        //if(NVIC_FAULT_STAT_R | NVIC_FAULT_STAT_DERR){
             NVIC_FAULT_STAT_R &= ~NVIC_FAULT_STAT_DERR;
-        }
-        else{
+        //}
+        //else{
             NVIC_FAULT_STAT_R &= ~NVIC_FAULT_STAT_IERR;
-        }
+        //}
         putsUart0("Called from MPU.\r\n");
         putsUart0("\r\n");
     }
 }
 
-//void thread(){
-//
-//    uint32_t* p;
-//    uint32_t *q;
-//    uint32_t *r;
-//
-//    p = (uint32_t*) 0x200003FC;
-//    *p = 0;
-//
-//
-//    q = (uint32_t*) 0x200003F8;
-//    *q = 0;
-//
-//    r = (uint32_t*) 0x20000420;
-//    *r = 0;
-//
-//    while(true);
-//}
-
+//this thread test the region access in the user mode. The region size that is only accessible is 1kiB. If the instruction
+//tries to access the region outside of 1kiB then it throws mpu fault error and prints the stack dump.
 void thread(){
     char* p;
 
@@ -365,16 +340,16 @@ int main(void)
     setUart0BaudRate(115200, 40e6);
 
     setPSP();
-    //putsUart0("Setting up the PSP\r\n");
+    putsUart0("Setting up the PSP\r\n");
 
     setASP();
-    //putsUart0("Setting up the ASP\r\n");
+    putsUart0("Setting up the ASP\r\n");
 
     usermode();
-    //putsUart0("Turning on user mode\r\n");
+    putsUart0("Turning on user mode\r\n");
 
     //privilegedmode();
-    //putsUart0("Turning on privileged mode");
+    //putsUart0("Turning on privileged mode\r\n");
 
      thread();
 
